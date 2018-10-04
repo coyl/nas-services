@@ -1,0 +1,17 @@
+version: '3'
+services:
+    netatalk:
+        image: servercontainers/netatalk
+        restart: always
+        environment:
+            ACCOUNT_tm: ${TM_PASS}
+            NETATALK_VOLUME_CONFIG_tm: "[TimeCapsule NAS]; path=/shares/timemachine; valid users = tm; vol size limit = 700000; time machine = yes"
+        volumes:
+        - /mnt/storage/timemachine:/shares/timemachine
+        ports:
+        - 548:548
+        networks:
+        - netatalk
+networks:
+    netatalk:
+        driver: bridge

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+    netatalk:
+        image: linuxserver/rutorrent
+        restart: always
+        environment:
+            TZ: GMT+3
+            PGID: 1000
+            PUID: 1000
+        volumes:
+        - /mnt/fileserver/downloads:/downloads
+        - ./config:/config
+        ports:
+        - ${RUTORRENT_WEB_PORT}:80
+        - 5000:5000
+        - 51413:51413
+        - 6881:6881/udp
