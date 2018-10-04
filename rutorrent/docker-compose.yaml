@@ -9,7 +9,7 @@ services:
             PGID: 1000
             PUID: 1000
         volumes:
-        - /mnt/fileserver/downloads:/downloads
+        - /mnt/media/downloads:/downloads
         - ./config:/config
         ports:
         - ${RUTORRENT_WEB_PORT}:80
