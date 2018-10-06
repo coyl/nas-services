@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    netatalk:
+    rtorrent:
         image: linuxserver/rutorrent
         restart: always
         environment:
@@ -10,6 +10,7 @@ services:
             PUID: 1000
         volumes:
         - /mnt/media/downloads:/downloads
+        - /mnt/storage/dropbox/torrents:/watch
         - ./config:/config
         ports:
         - ${RUTORRENT_WEB_PORT}:80

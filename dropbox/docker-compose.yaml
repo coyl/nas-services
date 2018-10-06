@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    dropbox:
+        image: janeczku/dropbox
+        restart: always
+        environment:
+            DBOX_UID: 1000
+            DBOX_GID: 1000
+        volumes:
+        - /mnt/storage/dropbox:/dbox/Dropbox

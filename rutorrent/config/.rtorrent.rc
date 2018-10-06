@@ -1,0 +1,99 @@
+
+# ip = 178.32.28.51
+# network.http.ssl_verify_peer.set=0
+# scgi_port = 0.0.0.0:5000
+# system.umask.set = 022
+
+# ----------------------------------------------------------------------
+# ~/.rtorrent.rc
+#
+# rtorrent configuration
+#    ____                _ _
+#   / ___|  ___  ___  __| | |__   _____  __
+#   \___ \ / _ \/ _ \/ _` | '_ \ / _ \ \/ /
+#    ___) |  __/  __/ (_| | |_) | (_) >  <
+#   |____/ \___|\___|\__,_|_.__/ \___/_/\_\
+#
+# @see http://torrent-invites.com/help/172374-advice-rtorrent-rc-config.html
+# ----------------------------------------------------------------------
+
+execute = {sh,-c,/usr/bin/php7 /usr/share/webapps/rutorrent/php/initplugins.php abc &}
+execute.nothrow = rm,/run/php/.rtorrent.sock
+network.scgi.open_local = /run/php/.rtorrent.sock
+schedule = socket_chmod,0,0,"execute=chmod,0660,/run/php/.rtorrent.sock"
+schedule = socket_chgrp,0,0,"execute=chgrp,abc,/run/php/.rtorrent.sock"
+log.open_file = "rtorrent", /config/log/rtorrent/rtorrent.log
+log.add_output = "info", "rtorrent"
+
+min_peers = 40
+max_peers = 1200
+max_uploads = 15
+download_rate = 10000
+upload_rate = 5000
+
+# ----------------------------------------------------------------------
+# BitTorrent
+# ----------------------------------------------------------------------
+
+max_downloads_global             = 0
+max_uploads_global               = 0
+min_peers                        = 500
+max_peers                        = 1000
+min_peers_seed                   = 500
+max_peers_seed                   = 1000
+max_uploads                      = 1000
+download_rate                    = 0
+upload_rate                      = 0
+tracker_numwant                  = 250
+
+
+# ----------------------------------------------------------------------
+# Directories
+# ----------------------------------------------------------------------
+
+directory = /downloads/incoming
+session = /config/rtorrent/rtorrent_sess
+
+# Watching directories
+#schedule = watch_directory_1,5,5,"load.start=/downloads/watched/*.torrent"
+
+schedule = watch_directory_1,5,5,"load.start=/watch/tvshows/*.torrent,d.set_custom1=tvshows"
+schedule = watch_directory_2,5,5,"load.start=/watch/movies/*.torrent,d.set_custom1=movies"
+schedule = watch_directory_3,5,5,"load.start=/watch/etc/*.torrent,d.set_custom1=etc"
+
+schedule = low_diskspace,5,60,close_low_diskspace=100M
+
+
+# Add new method to get finished dir
+system.method.insert = d.get_finished_dir,simple,"cat=/downloads/,$d.get_custom1="
+
+
+# Variant 1. On completion, move the torrent to the directory from custom1.
+system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
+
+# Variant 2. On completion, move the torrent to the directory from custom1 and create symlink
+# Add new method to get torrent dir after moving; Add new method to get symlink dir
+#system.method.insert = d.get_moved_dir,simple,"cat=/downloads/,$d.get_custom1=,/,$d.get_name="
+#system.method.insert = d.get_symlink_dir,simple,"cat=/fileserver/,$d.get_custom1=,/,$d.get_name="
+#system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir=;execute=ln,-s,$d.get_moved_dir=,$d.get_symlink_dir="
+
+encoding_list = UTF-8
+
+# ----------------------------------------------------------------------
+# Network
+# ----------------------------------------------------------------------
+
+bind = 0.0.0.0
+port_range = 51413-51413
+check_hash = yes
+encryption = allow_incoming,try_outgoing,enable_retry
+dht = auto
+dht_port = 6881
+
+# ----------------------------------------------------------------------
+# Hash
+# ----------------------------------------------------------------------
+
+check_hash                       = no
+pieces.preload.type.set          = 1
+max_memory_usage                 = 4000M
