@@ -44,7 +44,6 @@ max_peers_seed                   = 1000
 max_uploads                      = 1000
 download_rate                    = 0
 upload_rate                      = 0
-tracker_numwant                  = 250
 
 
 # ----------------------------------------------------------------------
@@ -65,17 +64,17 @@ schedule = low_diskspace,5,60,close_low_diskspace=100M
 
 
 # Add new method to get finished dir
-system.method.insert = d.get_finished_dir,simple,"cat=/downloads/,$d.get_custom1="
+method.insert = d.get_finished_dir,simple,"cat=/downloads/,$d.get_custom1="
 
 
 # Variant 1. On completion, move the torrent to the directory from custom1.
-system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
+method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
 
 # Variant 2. On completion, move the torrent to the directory from custom1 and create symlink
 # Add new method to get torrent dir after moving; Add new method to get symlink dir
-#system.method.insert = d.get_moved_dir,simple,"cat=/downloads/,$d.get_custom1=,/,$d.get_name="
-#system.method.insert = d.get_symlink_dir,simple,"cat=/fileserver/,$d.get_custom1=,/,$d.get_name="
-#system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir=;execute=ln,-s,$d.get_moved_dir=,$d.get_symlink_dir="
+#method.insert = d.get_moved_dir,simple,"cat=/downloads/,$d.get_custom1=,/,$d.get_name="
+#method.insert = d.get_symlink_dir,simple,"cat=/fileserver/,$d.get_custom1=,/,$d.get_name="
+#method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir=;execute=ln,-s,$d.get_moved_dir=,$d.get_symlink_dir="
 
 encoding_list = UTF-8
 
