@@ -6,8 +6,8 @@ services:
         restart: always
         environment:
             TZ: GMT+3
-            PGID: 1000
-            PUID: 1000
+            PLEX_GID: 1000
+            PLEX_UID: 1000
             ADVERTISE_IP: ${ADVERTISE_IP}
             PLEX_CLAIM: ${CLAIM_TOKEN}
         volumes:
