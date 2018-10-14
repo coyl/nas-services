@@ -60,7 +60,6 @@ schedule2 = watch_start_etc, 10, 10, ((load.start_verbose, "/watch/etc/*.torrent
 schedule2 = monitor_diskspace, 15, 60, ((close_low_diskspace, 500M))
 
 # Add new method to get finished dir
-"cat=(session.path), (d.hash), .torrent"
 method.insert = d.final_dir, simple, "cat=\"/downloads/\", (d.custom1)"
 
 # Variant 1. On completion, move the torrent to the directory from custom1.
