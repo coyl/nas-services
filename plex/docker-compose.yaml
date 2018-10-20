@@ -14,4 +14,4 @@ services:
         - /mnt/media/downloads:/data
         - /mnt/storage/plex/database:/config
         - /mnt/storage/plex/transcode:/transcode
-        net: "host"
+        network_mode: "host"
