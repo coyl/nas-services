@@ -3,16 +3,8 @@ version: '3'
 services:
   db:
     image: mysql/mysql-server:5.7
-    hostname: db
-    networks:
-      net:
-        aliases:
-          - db
-    volumes:
-      - ${PWD}/mysql:/var/lib/mysql
-      - ${PWD}/conf/mysql:/etc/mysql:ro
     environment:
-      - TZ=America/Argentina/Buenos_Aires
+      - TZ=Europe/Moscow
       - MYSQL_USER=zmuser
       - MYSQL_PASSWORD=zmpass
       - MYSQL_DATABASE=zm
@@ -20,10 +12,7 @@ services:
       - MYSQL_ROOT_HOST=%
   web:
     image: quantumobject/docker-zoneminder
-    networks:
-      - net
     volumes:
-      - /var/empty
       - ${PWD}/backups:/var/backups
       - ${PWD}/zoneminder:/var/cache/zoneminder
     environment:
@@ -36,10 +25,7 @@ services:
       - db
   stream:
     image: quantumobject/docker-zoneminder
-    networks:
-      - net
     volumes:
-      - /var/empty
       - ${PWD}/backups:/var/backups
       - ${PWD}/zoneminder:/var/cache/zoneminder
     environment:
@@ -52,6 +38,3 @@ services:
       - ${WEB_PORT}:${WEB_PORT}
     depends_on:
       - web
-networks:
-  net:
-    driver: overlay
