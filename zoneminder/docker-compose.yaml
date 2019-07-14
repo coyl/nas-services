@@ -28,9 +28,9 @@ services:
       - ${PWD}/zoneminder:/var/cache/zoneminder
     environment:
       - TZ=Europe/Moscow
-      - VIRTUAL_HOST=zm.localhost, stream0.localhost
+      - VIRTUAL_HOST=zm.localhost, stream.localhost
       - SERVICE_PORTS=${WEB_PORT}
-      - ZM_SERVER_HOST=node.0
+      - ZM_SERVER_HOST=node
       - ZM_DB_HOST=db
     depends_on:
       - db
@@ -44,9 +44,9 @@ services:
       - ${PWD}/zoneminder:/var/cache/zoneminder
     environment:
       - TZ=Europe/Moscow
-      - VIRTUAL_HOST=stream{{.Task.Slot}}.localhost
+      - VIRTUAL_HOST=stream.localhost
       - SERVICE_PORTS=${WEB_PORT}
-      - ZM_SERVER_HOST=node.{{.Task.Slot}}
+      - ZM_SERVER_HOST=node
       - ZM_DB_HOST=db
     ports:
       - ${WEB_PORT}:${WEB_PORT}
