@@ -5,5 +5,7 @@ services:
     image: zoneminderhq/zoneminder:latest-ubuntu18.04
     environment:
       - TZ=Europe/Moscow
+      - PATH_ZMS=/zm/cgi-bin/nph-zms
     ports:
-      - ${WEB_PORT}:80
+      - ${WEB_PORT}:443
+    shm_size: 512M
