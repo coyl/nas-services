@@ -26,8 +26,6 @@ services:
       - /var/empty
       - ${PWD}/backups:/var/backups
       - ${PWD}/zoneminder:/var/cache/zoneminder
-      - type: tmpfs
-        target: /dev/shm
     environment:
       - TZ=Europe/Moscow
       - VIRTUAL_HOST=zm.localhost, stream0.localhost
@@ -44,8 +42,6 @@ services:
       - /var/empty
       - ${PWD}/backups:/var/backups
       - ${PWD}/zoneminder:/var/cache/zoneminder
-      - type: tmpfs
-        target: /dev/shm
     environment:
       - TZ=Europe/Moscow
       - VIRTUAL_HOST=stream{{.Task.Slot}}.localhost
