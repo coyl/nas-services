@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3'
 
 services:
   db:
@@ -9,8 +9,8 @@ services:
         aliases:
           - db
     volumes:
-      - $PWD/mysql:/var/lib/mysql
-      - $PWD/conf/mysql:/etc/mysql:ro
+      - ${PWD}/mysql:/var/lib/mysql
+      - ${PWD}/conf/mysql:/etc/mysql:ro
     environment:
       - TZ=America/Argentina/Buenos_Aires
       - MYSQL_USER=zmuser
@@ -18,22 +18,14 @@ services:
       - MYSQL_DATABASE=zm
       - MYSQL_ROOT_PASSWORD=mysqlpsswd
       - MYSQL_ROOT_HOST=%
-    deploy:
-      mode: replicated
-      replicas: 1
-      endpoint_mode: dnsrr
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-        window: 120s
   web:
     image: quantumobject/docker-zoneminder
     networks:
       - net
     volumes:
       - /var/empty
-      - $PWD/backups:/var/backups
-      - $PWD/zoneminder:/var/cache/zoneminder
+      - ${PWD}/backups:/var/backups
+      - ${PWD}/zoneminder:/var/cache/zoneminder
       - type: tmpfs
         target: /dev/shm
     environment:
@@ -50,8 +42,8 @@ services:
       - net
     volumes:
       - /var/empty
-      - $PWD/backups:/var/backups
-      - $PWD/zoneminder:/var/cache/zoneminder
+      - ${PWD}/backups:/var/backups
+      - ${PWD}/zoneminder:/var/cache/zoneminder
       - type: tmpfs
         target: /dev/shm
     environment:
@@ -61,9 +53,7 @@ services:
       - ZM_SERVER_HOST=node.{{.Task.Slot}}
       - ZM_DB_HOST=db
     ports:
-      - target: ${WEB_PORT}
-        published: ${WEB_PORT}
-        protocol: tcp
+      - ${WEB_PORT}:${WEB_PORT}
     depends_on:
       - web
 networks:
